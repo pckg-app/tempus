@@ -4,7 +4,6 @@ use Pckg\Collection;
 use Pckg\Framework\Controller;
 use Pckg\Maestro\Helper\Maestro;
 use Pckg\Tempus\Entity\Items;
-use Pckg\Tempus\Record\Item;
 
 class Tempus extends Controller
 {
@@ -12,105 +11,28 @@ class Tempus extends Controller
     use Maestro;
 
     public function getHomeAction(Items $items) {
-        $items = $items->orderBy('created_at DESC')
-                       ->where('finished_at')
-                       ->all();
-        $collection = new Collection();
-
-        $items->each(
-            function(Item $item) {
-                /**
-                 * @T00D00 - This needs to be added as filter on frontend!
-                 */
-                if ($item->idle > 2 * 60 * 1000) {
-                    $item->program = 'IDLE';
-                } else {
-                    if (strpos($item->program, 'chrome') || strpos($item->program, 'chromium')) {
-                        $item->program = 'Google Chrome';
-                    } elseif (strpos($item->program, 'terminal')) {
-                        $item->program = 'Terminal';
-                    } elseif (strpos($item->program, 'skype')) {
-                        $item->program = 'Skype';
-                    } elseif (strpos($item->program, 'geary')) {
-                        $item->program = 'Geary (email)';
-                    } elseif (strpos($item->program, 'jetbrains')) {
-                        $item->program = 'PHP Storm';
-                    } elseif (strpos($item->program, 'libre')) {
-                        $item->program = 'Office';
-                    } elseif (strpos($item->program, 'gnome') || strpos($item->program, 'navigator') || strpos(
-                            $item->program,
-                            'Navigator'
-                        ) || strpos($item->program, 'nautilus') || strpos(
-                                  $item->program,
-                                  'unity'
-                              ) || strpos($item->program, 'desktop')
-                    ) {
-                        $item->program = 'System';
-                    } elseif (!$item->program) {
-                        $item->program = '-- not set --';
-                    }
-                }
-            }
-        );
+        $allItems = $items->orderBy('created_at DESC')
+                          ->where('finished_at')
+            /*->where(
+                (new Raw())->where('items.name', '%gnp%', 'LIKE')
+                           ->orWhere('items.name', '%gonparty%', 'LIKE')
+                           ->orWhere('items.name', '%gremonaparty%', 'LIKE')
+                           ->orWhere('items.name', '%schtr4jh@bob%', 'LIKE')
+                           ->orWhere('items.name', '%schtr4jh@gonparty%', 'LIKE')
+                           ->orWhere('items.name', '%hard island%', 'LIKE')
+                           ->orWhere('items.name', '%hardisland%', 'LIKE')
+                           ->orWhere('items.name', '%.pckg.%', 'LIKE')
+                           ->orWhere('items.name', '%.foobar.si%', 'LIKE')
+                           ->orWhere('items.name', '%dev.php%', 'LIKE')
+            )*/
+                          ->all();
 
         return view(
             'home',
             [
-                'items' => $items,
+                'items'    => $allItems,
             ]
         );
-
-        $groups = [];
-        $all = $items->active()
-                     ->joinPrevItem()
-                     ->joinNextItem()
-            /*->where(
-                (new Raw())->where('items.name', '%gnp%', 'LIKE')
-                           ->orWhere('items.name', '%gonparty%', 'LIKE')
-                           ->orWhere('items.name', '%gonparty%', 'LIKE')
-                           ->orWhere('items.name', '%@bob%', 'LIKE')
-                           ->orWhere('items.name', '%hard island%', 'LIKE')
-                           ->orWhere('items.name', '%hardisland%', 'LIKE')
-                           ->orWhere('items.name', '%bob.pckg%', 'LIKE')
-                           ->orWhere('items.name', '%\/www\/%', 'LIKE')
-                           ->orWhere('items.name', '%dev.php%', 'LIKE')
-            )*/
-                     ->where()
-            //->where('idle', 2 * 60 * 1000, '<')
-                     ->orderBy('items.created_at')
-                     ->limit(200)
-                     ->all();
-
-        $collection = new Collection();
-        $prev = null;
-        $all->each(
-            function($item) use (&$prev) {
-                if ($prev) {
-                    $prev->setRelation('next', $item);
-                    $item->setRelation('prev', $prev);
-                }
-                $prev = $item;
-            }
-        );
-
-        return $this->tabelize($items, [], 'Tempus')
-                    ->setEntityActions([])
-                    ->setRecordActions([])
-                    ->setRecords($all)
-                    ->setGroups($groups)
-                    ->setFields(
-                        [
-                            'id',
-                            'program',
-                            'name',
-                            'created_at',
-                            'duration' => function($item) use (&$prev) {
-                                if ($item->hasRelation('prev') && $item->hasRelation('next')) {
-                                    return get_date_diff($item->prev->created_at, $item->next->created_at);
-                                }
-                            },
-                        ]
-                    );
     }
 
 }

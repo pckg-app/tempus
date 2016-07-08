@@ -1,5 +1,3 @@
-This is template
-
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 <script type="text/javascript">
@@ -16,7 +14,7 @@ This is template
         dataTable.addColumn({ type: 'date', id: 'End' });
         dataTable.addRows([
             {% for item in items %}
-            [ '{{ item.program|e('js') }}', '', new Date('{{ item.created_at }}'), new Date('{{ item.finished_at }}') ],
+            [ '{{ item.getProgramGroup()|e('js') }}', '', new Date('{{ item.created_at }}'), new Date('{{ item.finished_at }}') ],
             {% endfor %}
         ]);
         var options = {
