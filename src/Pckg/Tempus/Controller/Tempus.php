@@ -12,6 +12,7 @@ class Tempus extends Controller
 
     public function getHomeAction(Items $items) {
         $allItems = $items->orderBy('created_at DESC')
+                          ->where('created_at', date('Y-m-d H:i:s', strtotime('-1day -1hour')), '>=')
                           ->where('finished_at')
             /*->where(
                 (new Raw())->where('items.name', '%gnp%', 'LIKE')
@@ -30,7 +31,7 @@ class Tempus extends Controller
         return view(
             'home',
             [
-                'items'    => $allItems,
+                'items' => $allItems,
             ]
         );
     }

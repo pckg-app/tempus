@@ -25,7 +25,7 @@ class Item extends Record
                 return 'Email';
             } elseif (strpos($this->program, 'jetbrains')) {
                 return 'Developing';
-            } elseif (strpos($this->program, 'libre')) {
+            } elseif (strpos($this->program, 'libre') || strpos($this->program, 'evince') || strpos($this->program, 'gedit')) {
                 return 'Office';
             } elseif (strpos($this->program, 'TeamViewer')) {
                 return 'Remote';
@@ -38,7 +38,9 @@ class Item extends Record
                 strpos($this->program, 'desktop') ||
                 strpos($this->program, 'unity') ||
                 strpos($this->program, 'gcr-viewer') ||
-                strpos($this->program, 'file-roller')
+                strpos($this->program, 'file-roller') ||
+                strpos($this->program, 'nm-applet') ||
+                strpos($this->program, 'update-notifier')
             ) {
                 return 'System';
             } elseif (!$this->program) {
