@@ -7,14 +7,16 @@ use Pckg\Tempus\Record\Item;
 class FetchTempus extends Command
 {
 
-    protected function configure() {
+    protected function configure()
+    {
         parent::configure();
 
         $this->setName('tempus:fetch')
              ->setDescription('Fetch currently active window info');
     }
 
-    public function handle() {
+    public function handle()
+    {
         $interval = 1 * 1000 * 1000;
         $prev = (new Items())->orderBy('created_at DESC')->one();
 

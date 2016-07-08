@@ -9,26 +9,29 @@ class Items extends Entity
 
     protected $record = Item::class;
 
-    public function prevItem() {
+    public function prevItem()
+    {
         return $this->hasOne(Items::class, 'prev_item')
                     ->where(new Raw('prev_item.id = items.id - 1'))
                     ->leftJoin();
     }
 
-    public function nextItem() {
+    public function nextItem()
+    {
         return $this->hasOne(Items::class, 'next_item')
                     ->where(new Raw('next_item.id = items.id + 1'))
                     ->leftJoin();
     }
 
-    public function nextSameItem() {
+    public function nextSameItem()
+    {
         return $this->hasOne(Items::class, 'next_same_item')
                     ->addSelect(
                         [
                             'next_finished_at' => 'next_same_item.finished_at',
-                            'next_created_at' => 'next_same_item.created_at',
-                            'next_duration'   => 'next_same_item.duration',
-                            'next_id'         => 'next_same_item.id',
+                            'next_created_at'  => 'next_same_item.created_at',
+                            'next_duration'    => 'next_same_item.duration',
+                            'next_id'          => 'next_same_item.id',
                         ]
                     )
                     ->where(
@@ -40,7 +43,8 @@ class Items extends Entity
                     ->leftJoin();
     }
 
-    public function active() {
+    public function active()
+    {
         return $this->where('idle', 2 * 60 * 1000, '<');
     }
 

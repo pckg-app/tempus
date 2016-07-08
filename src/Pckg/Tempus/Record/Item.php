@@ -8,7 +8,8 @@ class Item extends Record
 
     protected $entity = Items::class;
 
-    public function getProgramGroup() {
+    public function getProgramGroup()
+    {
         /**
          * @T00D00 - This needs to be added as filter on frontend!
          */
@@ -25,7 +26,11 @@ class Item extends Record
                 return 'Email';
             } elseif (strpos($this->program, 'jetbrains')) {
                 return 'Developing';
-            } elseif (strpos($this->program, 'libre') || strpos($this->program, 'evince') || strpos($this->program, 'gedit')) {
+            } elseif (strpos($this->program, 'libre') || strpos($this->program, 'evince') || strpos(
+                    $this->program,
+                    'gedit'
+                )
+            ) {
                 return 'Office';
             } elseif (strpos($this->program, 'TeamViewer')) {
                 return 'Remote';
@@ -40,7 +45,8 @@ class Item extends Record
                 strpos($this->program, 'gcr-viewer') ||
                 strpos($this->program, 'file-roller') ||
                 strpos($this->program, 'nm-applet') ||
-                strpos($this->program, 'update-notifier')
+                strpos($this->program, 'update-notifier') ||
+                strpos($this->program, 'apport-gtk')
             ) {
                 return 'System';
             } elseif (!$this->program) {
@@ -51,11 +57,9 @@ class Item extends Record
         return $this->program;
     }
 
-    public function getReadableDuration() {
-        return \Pckg\Tempus\Controller\get_date_diff(
-                   0,
-                   $this->duration_sum
-               ) . ' (' . \Pckg\Tempus\Controller\get_date_diff(0, $this->duration_calc) . ')';
+    public function getReadableDuration()
+    {
+        return get_date_diff(0, $this->duration_sum) . ' (' . get_date_diff(0, $this->duration_calc) . ')';
     }
 
 }

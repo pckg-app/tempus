@@ -5,7 +5,8 @@ use Pckg\Migration\Migration;
 class CreateTempusTables extends Migration
 {
 
-    public function up() {
+    public function up()
+    {
         $items = $this->table('items');
         $items->varchar('program');
         $items->varchar('name', 255);
