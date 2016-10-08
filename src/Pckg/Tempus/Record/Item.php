@@ -31,7 +31,7 @@ class Item extends Record
             } elseif (strpos($this->program, 'jetbrains')) {
                 return 'Developing';
 
-            } elseif (strpos($this->program, 'libre') || strpos($this->program, 'evince') || strpos(
+            } elseif (strpos($this->program, 'libre') || strpos($this->program, 'soffice') || strpos($this->program, 'evince') || strpos(
                     $this->program,
                     'gedit'
                 )
@@ -63,6 +63,9 @@ class Item extends Record
                 strpos($this->program, 'vlc')
             ) {
                 return 'Media';
+
+            } elseif (strpos($this->program, 'ibbobb') || strpos($this->program, 'Steam')) {
+                return 'Games';
 
             } elseif (!$this->program) {
                 if (strpos($this->name, 'unity')) {
