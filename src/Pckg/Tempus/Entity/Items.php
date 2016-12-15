@@ -11,21 +11,21 @@ class Items extends Entity
 
     public function prevItem()
     {
-        return $this->hasOne(Items::class, 'prev_item')
+        return $this->hasOne(Items::class, null, 'prev_item')
                     ->where(new Raw('prev_item.id = items.id - 1'))
                     ->leftJoin();
     }
 
     public function nextItem()
     {
-        return $this->hasOne(Items::class, 'next_item')
+        return $this->hasOne(Items::class, null, 'next_item')
                     ->where(new Raw('next_item.id = items.id + 1'))
                     ->leftJoin();
     }
 
     public function nextSameItem()
     {
-        return $this->hasOne(Items::class, 'next_same_item')
+        return $this->hasOne(Items::class, null, 'next_same_item')
                     ->addSelect(
                         [
                             'next_finished_at' => 'next_same_item.finished_at',
