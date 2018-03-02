@@ -21,13 +21,6 @@ class Tempus extends Provider
         ];
     }
 
-    public function afterwares()
-    {
-        return [
-            EncapsulateResponse::class,
-        ];
-    }
-
     public function routes()
     {
         return [
