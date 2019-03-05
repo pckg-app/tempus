@@ -9,7 +9,7 @@ class CreateTempusTables extends Migration
     {
         $items = $this->table('items');
         $items->varchar('program');
-        $items->varchar('name', 255);
+        $items->varchar('name');
         $items->varchar('role');
         $items->integer('idle');
         $items->datetime('created_at');
